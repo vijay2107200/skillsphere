@@ -42,3 +42,12 @@ exports.deleteGig = async (req, res) => {
   await Gig.findByIdAndDelete(req.params.id);
   res.json({ success: true });
 };
+
+exports.verifyFreelancer = async (req, res) => {
+  const FreelancerProfile = require('../models/FreelancerProfile');
+  const profile = await FreelancerProfile.findOne({ user: req.params.id });
+  if (!profile) return res.status(404).json({ message: 'Freelancer profile not found' });
+  profile.isVerified = !profile.isVerified;
+  await profile.save();
+  res.json({ success: true, isVerified: profile.isVerified });
+};

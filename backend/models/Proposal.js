@@ -7,6 +7,13 @@ const proposalSchema = new mongoose.Schema({
   bidAmount: { type: Number, required: true },
   deliveryDays: { type: Number, required: true },
   status: { type: String, enum: ['pending', 'accepted', 'rejected', 'withdrawn'], default: 'pending' },
+  milestones: [{
+    title: { type: String, required: true },
+    description: { type: String, default: '' },
+    dueDate: { type: Date },
+    completed: { type: Boolean, default: false },
+    completedAt: { type: Date },
+  }],
 }, { timestamps: true });
 
 proposalSchema.index({ gig: 1, freelancer: 1 }, { unique: true });

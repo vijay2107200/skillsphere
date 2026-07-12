@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema({
   isActive: { type: Boolean, default: true },
   isBlocked: { type: Boolean, default: false },
   googleId: { type: String },
+  twoFactorEnabled: { type: Boolean, default: false },
+  twoFactorOTP: String,
+  twoFactorOTPExpire: Date,
 }, { timestamps: true });
 
 userSchema.pre('save', async function () {

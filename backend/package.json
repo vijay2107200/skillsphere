@@ -21,6 +21,8 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.3",
     "nodemailer": "^9.0.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "razorpay": "^2.9.6",
     "socket.io": "^4.8.3"
   },

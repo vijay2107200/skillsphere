@@ -13,6 +13,12 @@ const freelancerProfileSchema = new mongoose.Schema({
   reputationScore: { type: Number, default: 0 },
   totalEarnings: { type: Number, default: 0 },
   completedJobs: { type: Number, default: 0 },
+  availability: [{
+    day: { type: String, enum: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'] },
+    available: { type: Boolean, default: false },
+    from: { type: String, default: '09:00' },
+    to: { type: String, default: '17:00' },
+  }],
 }, { timestamps: true });
 
 module.exports = mongoose.model('FreelancerProfile', freelancerProfileSchema);

@@ -4,6 +4,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const helmet = require('helmet');
+const passport = require('./config/passport');
 const connectDB = require('./config/db');
 
 connectDB();
@@ -16,9 +17,10 @@ const io = new Server(server, {
 
 app.set('io', io);
 
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:3000', credentials: true }));
 app.use(express.json());
+app.use(passport.initialize());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/profile', require('./routes/profile'));
@@ -29,6 +31,7 @@ app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/payments', require('./routes/payments'));
+app.use('/api/disputes', require('./routes/disputes'));
 
 app.get('/', (req, res) => res.json({ message: 'SkillSphere API running' }));
 
@@ -40,6 +43,12 @@ app.use((err, req, res, next) => {
 io.on('connection', (socket) => {
   socket.on('join', (userId) => {
     socket.join(userId);
+  });
+  socket.on('typing', ({ to }) => {
+    socket.to(to).emit('user_typing', { from: socket.id });
+  });
+  socket.on('stop_typing', ({ to }) => {
+    socket.to(to).emit('user_stop_typing', { from: socket.id });
   });
   socket.on('disconnect', () => {});
 });
