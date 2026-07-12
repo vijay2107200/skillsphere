@@ -4,10 +4,13 @@ const Payment = require('../models/Payment');
 const Proposal = require('../models/Proposal');
 const Gig = require('../models/Gig');
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+const razorpayConfigured = () =>
+  process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_ID !== 'rzp_test_placeholder';
+
+const getRazorpay = () => {
+  if (!razorpayConfigured()) return null;
+  return new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_KEY_SECRET });
+};
 
 // POST /api/payments/create-order
 exports.createOrder = async (req, res) => {
@@ -25,7 +28,10 @@ exports.createOrder = async (req, res) => {
   const existing = await Payment.findOne({ proposal: proposalId, status: 'paid' });
   if (existing) return res.status(400).json({ message: 'Payment already completed for this proposal' });
 
-  const amount = proposal.bidAmount * 100; // Razorpay uses paise
+  const razorpay = getRazorpay();
+  if (!razorpay) return res.status(503).json({ message: 'Payment gateway not configured — use mock pay instead' });
+
+  const amount = proposal.bidAmount * 100;
 
   const order = await razorpay.orders.create({
     amount,
