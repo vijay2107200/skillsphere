@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setUserFromOAuth } from '../../store/slices/authSlice';
 import { fetchMe } from '../../store/slices/authSlice';
 
 export default function OAuthSuccess() {
@@ -20,7 +19,7 @@ export default function OAuthSuccess() {
 
     localStorage.setItem('token', token);
     dispatch(fetchMe()).then(() => navigate('/dashboard'));
-  }, []);
+  }, [dispatch, navigate, searchParams]);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFFBF5' }}>

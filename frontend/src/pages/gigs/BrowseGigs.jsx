@@ -33,7 +33,7 @@ export default function BrowseGigs() {
 
   useEffect(() => {
     dispatch(fetchGigs(buildParams()));
-  }, [dispatch, page, category]);
+  }, [dispatch, page, category]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (user?.role === 'freelancer') {

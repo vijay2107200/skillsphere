@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     if (!user) return;
     if (user.role !== 'admin') { navigate('/dashboard'); return; }
     loadAll();
-  }, [user]);
+  }, [user, navigate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadAll = async () => {
     setLoading(true);

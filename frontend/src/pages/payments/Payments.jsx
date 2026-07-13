@@ -11,7 +11,7 @@ export default function Payments() {
   const [pendingProposals, setPendingProposals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { loadData(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadData = async () => {
     setLoading(true);

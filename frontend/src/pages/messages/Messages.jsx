@@ -55,7 +55,7 @@ export default function Messages() {
       const conv = conversations.find((c) => c.user._id === withUserId);
       if (conv) openConversation(conv.user);
     }
-  }, [withUserId, conversations]);
+  }, [withUserId, conversations]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
